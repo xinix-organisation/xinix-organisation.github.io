@@ -204,8 +204,13 @@ function unblock(){
   document.cookie=BK+'=0; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
+const SK2='xinix_ok';
+function saveSuccess(){localStorage.setItem(SK2,'1');}
+function isSuccess(){return localStorage.getItem(SK2)==='1';}
+
 window.addEventListener('load',()=>{
   if(isBlocked()){showKo();}
+  else if(isSuccess()){showOk();}
 });
 
 // Comptage clics — UNIQUEMENT sur l'écran bloqué
@@ -282,7 +287,7 @@ function showOk(){
   const e=document.getElementById('okScreen');
   e.style.display='block';
   e.style.animation='fi .4s forwards';
-  // Bloquer le retour arrière
+  saveSuccess();
   history.pushState(null,'',location.href);
   window.addEventListener('popstate',()=>{
     history.pushState(null,'',location.href);
@@ -296,6 +301,7 @@ function showKo(){
   clicks=0;
 }
 function resetSite(){
+  localStorage.removeItem(SK2);
   document.getElementById('okScreen').style.display='none';
   document.getElementById('koScreen').style.display='none';
   document.getElementById('qCard').style.display='block';
